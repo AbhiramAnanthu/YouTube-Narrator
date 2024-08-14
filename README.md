@@ -10,10 +10,9 @@ This repository contains a simple Flask web application that converts text to sp
 
 ## Requirements
 
-- Python 3.x
+- Python 3.12
 - Flask
 - Boto3
-- Python-dotenv
 
 ## Setup
 
@@ -22,5 +21,5 @@ This repository contains a simple Flask web application that converts text to sp
 ```bash
 git clone https://github.com/your-username/flask-text-to-speech.git
 cd flask-text-to-speech
-
-## Or access at https://text-to-speech-bb1o.onrender.com
+```
+## Or access at [Link]url(https://text-to-speech-bb1o.onrender.com)
