@@ -1,5 +1,6 @@
 from flask import Flask, send_file, request, jsonify
 from dotenv import load_dotenv
+from script import *
 import boto3
 import os
 import tempfile
@@ -9,14 +10,16 @@ load_dotenv(dotenv_path=path)
 
 app = Flask(__name__)
 
+
 @app.route("/", methods=["GET", "POST"])
 def hello_polly():
     query = request.args.get("text")
+    script = script_refinement(query)
     if not query:
         return jsonify({"error": "No text provided"}), 400
 
     # Convert the text to speech
-    output_file_path = text_to_speech(query)
+    output_file_path = text_to_speech(script)
 
     if output_file_path:
         return send_file(
@@ -28,6 +31,7 @@ def hello_polly():
     else:
         return jsonify({"error": "Failed to generate speech"}), 500
 
+
 def text_to_speech(text):
     polly = boto3.client(
         "polly",
@@ -38,10 +42,14 @@ def text_to_speech(text):
 
     try:
         # Synthesize speech from the provided text
-        response = polly.synthesize_speech(Text=text, OutputFormat="mp3", VoiceId="Aditi")
+        response = polly.synthesize_speech(
+            Text=text, OutputFormat="mp3", VoiceId="Aditi"
+        )
 
         if "AudioStream" in response:
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_audio_file:
+            with tempfile.NamedTemporaryFile(
+                delete=False, suffix=".mp3"
+            ) as temp_audio_file:
                 temp_audio_file.write(response["AudioStream"].read())
                 return temp_audio_file.name
         else:
@@ -50,6 +58,7 @@ def text_to_speech(text):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+
 
 if __name__ == "__main__":
     app.run()

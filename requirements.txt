@@ -3,3 +3,6 @@ flask
 gunicorn
 Ipython
 python-dotenv
+langchain
+langchain-community
+langchain-google-genai
