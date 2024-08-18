@@ -11,9 +11,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def hello_polly():
-    # Get the 'text' parameter from the request
     query = request.args.get("text")
-
     if not query:
         return jsonify({"error": "No text provided"}), 400
 
@@ -34,8 +32,8 @@ def text_to_speech(text):
     polly = boto3.client(
         "polly",
         region_name="us-east-1",
-        aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-        aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+        aws_access_key_id=os.getenv("AWS_SECRET_ID"),
+        aws_secret_access_key=os.getenv("AWS_SECRET_KEY"),
     )
 
     try:
